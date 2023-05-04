@@ -25,18 +25,24 @@ const UserSchema = new mongoose.Schema(
         required: true,
         min: 5,
     },
-    /*picturePath: {
+    avatarName: {
         type: String,
-        default: "",
+        default: "DefaultAvtar.png",
     },
-    friends: {
-        type: Array,
-        default: []
-    },*/
     about: {type: String },
-    tags: {type: [String] },
-    viewedProfile: Number,
-    impressions: Number,
+    tags: {type: [String] }, // tags means tech stack
+    noOfQuestionsAsked: {
+        type: Number,
+        default: 0,
+    },
+    noOfAnswersGiven: {
+        type: Number,
+        default: 0,
+    },
+    savedQuestions: {
+        type: [String],
+        default: [],
+    },
 },
 { timestamps: true }
 );

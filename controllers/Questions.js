@@ -1,5 +1,6 @@
 import Questions from "../models/Question.js";
 import mongoose from "mongoose";
+import User from "../models/User.js";
 
 export const AskQuestion = async (req, res) => {
     const postQuestionData =req.body;
@@ -7,6 +8,9 @@ export const AskQuestion = async (req, res) => {
     const postQuestion = new Questions({ ...postQuestionData, userId });
     try {
         await postQuestion.save();
+        const user = await User.findById(userId);
+        userUpdateNoOfQuestions(userId, user.noOfQuestionsAsked+1);
+
         res.status(200).json("Posted a question successfully.");
     } catch(err) {
         console.log(err);
@@ -25,13 +29,15 @@ export const getAllQuestions = async (req, res) => {
 
 export const deleteQuestion = async (req, res) => {
     const { id: _id } = req.params;
-
+    const userId = req.userId;
     if(!mongoose.Types.ObjectId.isValid(_id)) {
         return res.status(404).send("question not present.");
     }
 
     try {
         await Questions.findByIdAndRemove(_id);
+        const user = await User.findById(userId);
+        userUpdateNoOfQuestions(userId, user.noOfQuestionsAsked-1);
         res.status(200).json({ message: "successfully deleted." });
     } catch (err) {
         res.status(404).json({ message: err.message });
@@ -81,5 +87,37 @@ export const voteQuestion = async (req, res) => {
         res.status(200).json({ message: "voted successfully "});
     } catch (error) {
         res.status(404).json({ message: "id not found "});
+    }
+};
+
+const userUpdateNoOfQuestions = async(userId, noOfQuestionsAsked) => {
+    try{
+        await User.findByIdAndUpdate(userId, {
+            $set: { noOfQuestionsAsked: noOfQuestionsAsked },
+        });
+        res.status(200).json({ message: "updated successfully "});
+    } catch(error) {
+        console.log(error);
+    }
+};
+
+export const saveQuestion = async (req,res) => {
+    const { id: _id } = req.params;
+    const userId = req.userId;
+
+    try {
+        const question = await Questions.findById(_id);
+        const user = await User.findById(userId);
+        const present = user.savedQuestions.findIndex(
+            (id) => id === String(_id)
+            );
+        if(present === -1){
+            user.savedQuestions.push(_id);
+        }  else {
+            user.savedQuestions = user.savedQuestions.filter((id) => id !== String(_id));
+        }
+        await User.findByIdAndUpdate(userId, user );
+    } catch (error) {
+        res.status(404).json({ message: "Id not found "});
     }
 };

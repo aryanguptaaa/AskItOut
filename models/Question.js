@@ -16,7 +16,7 @@ const QuestionSchema = new mongoose.Schema(
         },
         noOfAnswers: {
             type: Number,
-            dafault: 0,
+            default: 0,
         },
         picturePath: {
             type: String,
@@ -24,11 +24,11 @@ const QuestionSchema = new mongoose.Schema(
         },
         upVote: {
             type: [String],
-            dafault: [],
+            default: [],
         },
         downVote: {
             type: [String],
-            dafault: [],
+            default: [],
         },
         userPosted: {
             type: String,
@@ -46,6 +46,14 @@ const QuestionSchema = new mongoose.Schema(
                 answerBody: String,
                 userAnswered: String,
                 userId: String,
+                upVote: {
+                    type: [String],
+                    default: [],
+                },
+                downVote: {
+                    type: [String],
+                    default: [],
+                },        
                 answeredOn: {
                     type: Date,
                     default: Date.now,
