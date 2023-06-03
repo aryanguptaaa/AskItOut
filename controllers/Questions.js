@@ -10,6 +10,7 @@ export const AskQuestion = async (req, res) => {
         await postQuestion.save();
         const user = await User.findById(userId);
         userUpdateNoOfQuestions(userId, user.noOfQuestionsAsked+1);
+        user.myQuestions.push(postQuestion._id);
 
         res.status(200).json("Posted a question successfully.");
     } catch(err) {
@@ -38,6 +39,8 @@ export const deleteQuestion = async (req, res) => {
         await Questions.findByIdAndRemove(_id);
         const user = await User.findById(userId);
         userUpdateNoOfQuestions(userId, user.noOfQuestionsAsked-1);
+        user.myQuestions = user.myQuestions.filter((id) => id !== String(_id));
+        
         res.status(200).json({ message: "successfully deleted." });
     } catch (err) {
         res.status(404).json({ message: err.message });
@@ -95,7 +98,6 @@ const userUpdateNoOfQuestions = async(userId, noOfQuestionsAsked) => {
         await User.findByIdAndUpdate(userId, {
             $set: { noOfQuestionsAsked: noOfQuestionsAsked },
         });
-        res.status(200).json({ message: "updated successfully "});
     } catch(error) {
         console.log(error);
     }
@@ -121,3 +123,15 @@ export const saveQuestion = async (req,res) => {
         res.status(404).json({ message: "Id not found "});
     }
 };
+
+// export const addmyQuestion = async (id,userId) => {
+//     try {
+//         const question = await Questions.findById(id);
+//         const user = await User.findById(userId);
+        
+//         user.myQuestions.push(_id);
+//         await User.findByIdAndUpdate(userId, user );
+//     } catch (error) {
+//         console.log(error);
+//     }
+// };

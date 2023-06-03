@@ -20,12 +20,14 @@ export const getAllUsers = async (req, res) => {
         allUsers.forEach((user) => {
             allUserDetails.push({
                 _id: user._id,
-                name: user.name,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 about: user.about,
                 tags: user.tags,
                 noOfQuestionsAsked: user.noOfQuestionsAsked,
                 noOfAnswersGiven: user.noOfAnswersGiven,
-                savedQuestions: savedQuestions,
+                savedQuestions: user.savedQuestions,
+                myQuestions: user.myQuestions,
             });
         });
         res.status(200).json(allUserDetails);

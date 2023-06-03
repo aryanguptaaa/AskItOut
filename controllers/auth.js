@@ -32,6 +32,7 @@ export const register = async (req, res) => {
             noOfQuestionsAsked: 0,
             noOfAnswersGiven: 0,
             savedQuestions,
+            myQuestions,
         });
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);

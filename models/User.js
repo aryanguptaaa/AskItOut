@@ -43,6 +43,10 @@ const UserSchema = new mongoose.Schema(
         type: [String],
         default: [],
     },
+    myQuestions: {
+        type: [String],
+        default: [],
+    },
 },
 { timestamps: true }
 );
