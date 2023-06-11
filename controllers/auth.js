@@ -10,6 +10,7 @@ export const register = async (req, res) => {
             lastName,
             email,
             password,
+            avtarIndex,
             about,
         } = req.body;
 
@@ -26,13 +27,14 @@ export const register = async (req, res) => {
             lastName,
             email,
             password: passwordHash,
-            avatarName,
+            avtarIndex,
             about,
-            tags,
+            tags: [],
             noOfQuestionsAsked: 0,
             noOfAnswersGiven: 0,
-            savedQuestions,
-            myQuestions,
+            savedQuestions: [],
+            myQuestions: [],
+            myAnsweredQuestions: [],
         });
         const savedUser = await newUser.save();
         res.status(201).json(savedUser);

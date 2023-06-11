@@ -22,12 +22,14 @@ export const getAllUsers = async (req, res) => {
                 _id: user._id,
                 firstName: user.firstName,
                 lastName: user.lastName,
+                avtarIndex: user.avtarIndex,
                 about: user.about,
                 tags: user.tags,
                 noOfQuestionsAsked: user.noOfQuestionsAsked,
                 noOfAnswersGiven: user.noOfAnswersGiven,
                 savedQuestions: user.savedQuestions,
                 myQuestions: user.myQuestions,
+                myAnsweredQuestions: user.myAnsweredQuestions,
             });
         });
         res.status(200).json(allUserDetails);
@@ -94,7 +96,7 @@ export const addRemoveFriend = async (req, res) => {
 
 export const updateProfile = async(req,res) => {
     const { id: _id } = req.params;
-    const { name, about, tags } = req.body;
+    const { firstName, avtarIndex, about, tags } = req.body;
 
     if(!mongoose.Types.ObjectId.isValid(_id)) {
         return res.status(404).send("User unavailable");
@@ -103,7 +105,7 @@ export const updateProfile = async(req,res) => {
     try{
         const updateProfile = await User.findByIdAndUpdate(
             _id,
-            { $set: {name: name, about: about, tags: tags }},
+            { $set: {firstName: firstName, avtarIndex: avtarIndex, about: about, tags: tags }},
             { new: true }
         );
         res.status(200).json(updateProfile);

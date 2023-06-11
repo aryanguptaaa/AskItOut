@@ -15,6 +15,9 @@ import { verifyToken } from './middleware/auth.js';
 import questionRoutes from "./routes/Questions.js";
 import answerRoutes from "./routes/Answers.js";
 import { AskQuestion } from './controllers/Questions.js';
+import User from "./models/User.js";
+import Question from './models/Question.js';
+import { users, questions } from "./data/index.js";
 
 /*CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -59,4 +62,8 @@ mongoose.connect(process.env.MONGO_URL, {
     useUnifiedTopology: true,
 }).then(() => {
     app.listen(PORT, () => console.log('Server Port: '+ PORT));
+
+    //User.insertMany(users);
+    //Question.insertMany(questions);
+
 }).catch((error) => console.log(error + ' did not connect'));

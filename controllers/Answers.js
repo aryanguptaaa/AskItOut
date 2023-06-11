@@ -11,6 +11,7 @@ export const postAnswer = async (req, res) => {
     }
     const user = await User.findById(userId);
     userUpdateNoOfAnswers(userId, user.noOfAnswersGiven+1);
+    user.myAnsweredQuestions.push(_id);
     updateNoOfQuestions(_id, noOfAnswers);
     try {
         const updatedQuestion = await Questions.findByIdAndUpdate(_id, {
@@ -48,6 +49,7 @@ export const deleteAnswer = async (req, res) => {
     
     const user = await User.findById(userId);
     userUpdateNoOfAnswers(userId, user.noOfAnswersGiven-1);
+    user.myAnsweredQuestions = user.myAnsweredQuestions.filter((id) => id !== String(_id));
     updateNoOfQuestions(_id, noOfAnswers);
     try {
         await Questions.updateOne(

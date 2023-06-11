@@ -25,9 +25,9 @@ const UserSchema = new mongoose.Schema(
         required: true,
         min: 5,
     },
-    avatarName: {
-        type: String,
-        default: "DefaultAvtar.png",
+    avtarIndex: {
+        type: Number,
+        default: 0,
     },
     about: {type: String },
     tags: {type: [String] }, // tags means tech stack
@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema(
         default: [],
     },
     myQuestions: {
+        type: [String],
+        default: [],
+    },
+    myAnsweredQuestions: {
         type: [String],
         default: [],
     },
