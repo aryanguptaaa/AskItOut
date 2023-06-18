@@ -1,11 +1,11 @@
-import express from 'express';
-import { postAnswer, deleteAnswer, voteAnswer } from "../controllers/Answers.js";
-import { verifyToken } from '../middleware/auth.js';
+import express from "express";
+
+import { postAnswer, deleteAnswer } from "../controllers/Answers.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.patch("/post/:id", verifyToken, postAnswer);
-router.patch("/delete/:id", verifyToken, deleteAnswer);
-router.patch("/vote/:id", verifyToken, voteAnswer);
+router.patch("/post/:id", auth, postAnswer);
+router.patch("/delete/:id", auth, deleteAnswer);
 
 export default router;

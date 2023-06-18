@@ -1,22 +1,15 @@
-import express from 'express';
-import { register, login } from "../controllers/auth.js";
-import {
-    getUser,
-    getAllUsers,
-    updateProfile,
-} from "../controllers/users.js";
-import { verifyToken } from "../middleware/auth.js";
+import express from "express";
+
+import { login, signup } from "../controllers/auth.js";
+import { getAllUsers, updateProfile } from "../controllers/users.js";
+import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/signup", register);
+router.post("/signup", signup);
 router.post("/login", login);
 
-/* READ */ 
-router.get("/:id", verifyToken, getUser);
-router.get("/getAllUsers", verifyToken, getAllUsers);
-
-/*UPDATE*/
-router.patch("/update/:id", verifyToken, updateProfile);
+router.get("/getAllUsers", getAllUsers);
+router.patch("/update/:id", auth, updateProfile);
 
 export default router;

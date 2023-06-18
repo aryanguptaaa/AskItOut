@@ -1,115 +1,53 @@
 import mongoose from "mongoose";
-import User from "../models/User.js";
+import users from "../models/auth.js";
 
-/*READ */ 
-export const getUser = async (req, res) => {
-    try{
-        const { id } = req.params;
-        const user = await User.findById(id);
-        res.status(200).json(user);
-    } catch (err) {
-        res.status(404).json({ message: err.message });
-    }
-}
-
-/*NEW WRITE*/
 export const getAllUsers = async (req, res) => {
-    try {
-        const allUsers = await User.find();
-        const allUserDetails = [];
-        allUsers.forEach((user) => {
-            allUserDetails.push({
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                avtarIndex: user.avtarIndex,
-                about: user.about,
-                tags: user.tags,
-                noOfQuestionsAsked: user.noOfQuestionsAsked,
-                noOfAnswersGiven: user.noOfAnswersGiven,
-                savedQuestions: user.savedQuestions,
-                myQuestions: user.myQuestions,
-                myAnsweredQuestions: user.myAnsweredQuestions,
-            });
-        });
-        res.status(200).json(allUserDetails);
-    } catch (error){
-        res.status(404).json({ message: error.message });
-    }
+  try {
+    const allUsers = await users.find();
+    const allUserDetails = [];
+    allUsers.forEach((user) => {
+      allUserDetails.push({
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        about: user.about,
+        avtarIndex: user.avtarIndex,
+        tags: user.tags,
+        noOfQuestionsAsked: user.noOfQuestionsAsked,
+        noOfAnswersGiven: user.noOfAnswersGiven,
+        joinedOn: user.joinedOn,
+      });
+    });
+    res.status(200).json(allUserDetails);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
 };
 
+export const updateProfile = async (req, res) => {
+  const { id: _id } = req.params;
+  const { firstName, lastName, about, avtarIndex, tags } = req.body;
 
-/*export const getUserFriends = async (req, res) => {
-    try {
-    const { id } = req.params;
-    const user = await User.findById(id);
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).send("question unavailable...");
+  }
 
-    const friends = await Promise.all(
-        user.friends.map((id) => User.findById(id))
+  try {
+    const updatedProfile = await users.findByIdAndUpdate(
+      _id,
+      {
+        $set: {
+          firstName: firstName,
+          lastName: lastName,
+          about: about,
+          avtarIndex: avtarIndex,
+          tags: tags,
+        },
+      },
+      { new: true }
     );
-    const formattedFriends = friends.map(
-        ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-            return { _id, firstName, lastName, occupation, location, picturePath };
-        }
-    );
-    res.status(200).json(formattedFriends);
-    } catch(err) {
-        res.status(404).json({ message: err.message });
-    }
-};
-*/
-
-/* UPDATE  
-export const addRemoveFriend = async (req, res) => {
-    try {
-        const { id, friendId } = req.params;
-        const user = await User.findById(id);
-        const friend = await User.findById(friendId);
-
-        if(user.friends.includes(friendId)) {
-            user.friends = user.friends.filter((id) => id !== friendId);
-            friend.friends = friend.friends.filter((id) => id !== id);
-        } else {
-            user.friends.push(friendId);
-            friend.friends.push(id);
-        }
-        await user.save();
-        await friend.save();
-
-        const friends = await Promise.all(
-            user.friends.map((id) => User.findById(id))
-        );
-        const formattedFriends = friends.map(
-            ({ _id, firstName, lastName, occupation, location, picturePath }) => {
-                return { _id, firstName, lastName, occupation, location, picturePath };
-            }
-        );
-
-        res.status(200).json(formattedFriends);
-    } catch (err) {
-        res.status(404).json({ message: err.message });
-    }
-}
-*/
-
-/*NEW UPDATE*/
-
-export const updateProfile = async(req,res) => {
-    const { id: _id } = req.params;
-    const { firstName, avtarIndex, about, tags } = req.body;
-
-    if(!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(404).send("User unavailable");
-    }
-
-    try{
-        const updateProfile = await User.findByIdAndUpdate(
-            _id,
-            { $set: {firstName: firstName, avtarIndex: avtarIndex, about: about, tags: tags }},
-            { new: true }
-        );
-        res.status(200).json(updateProfile);
-    } catch(error) {
-        res.status(405).json({ message: error.message });
-    }
+    res.status(200).json(updatedProfile);
+  } catch (error) {
+    res.status(405).json({ message: error.message });
+  }
 };
