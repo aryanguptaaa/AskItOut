@@ -46,15 +46,12 @@ const userSchema = mongoose.Schema({
   },
   savedQuestions: {
     type: [String],
-    default: [],
   },
   myQuestions: {
     type: [String],
-    default: [],
   },
   myAnsweredQuestions: {
     type: [String],
-    default: [],
   },
   joinedOn: { type: Date, default: Date.now },
 });

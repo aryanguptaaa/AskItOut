@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node index.js"
   },
-  "author": "Manoj Kumar",
+  "author": "Aryan Gupta",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

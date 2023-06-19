@@ -15,6 +15,14 @@ const QuestionSchema = mongoose.Schema({
       answerBody: String,
       userAnswered: String,
       userId: String,
+      upVote: {
+        type: [String],
+        default: [],
+    },
+    downVote: {
+        type: [String],
+        default: [],
+    },
       answeredOn: { type: Date, default: Date.now },
     },
   ],
