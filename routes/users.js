@@ -9,8 +9,8 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 
-router.get("/:id", getUser);
 router.get("/getAllUsers", getAllUsers);
+router.get("/:id", getUser);
 router.patch("/update/:id", auth, updateProfile);
 
 export default router;
