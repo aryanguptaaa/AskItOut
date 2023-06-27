@@ -6,15 +6,13 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-//signup and login
-
 router.post("/signup", signup);
 router.post("/login", login);
 
-// getting user details
-
 router.get("/:id", getUser);
+
 router.get("/getAllUsers", getAllUsers);
+router.get("/:id", getUser);
 router.patch("/update/:id", auth, updateProfile);
 
 export default router;

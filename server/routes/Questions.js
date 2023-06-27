@@ -11,7 +11,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.post("/Ask", auth, AskQuestion);
+router.post("/ask", auth, AskQuestion);
 router.get("/get", getAllQuestions);
 
 //Use id of questions for the routes.
