@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/ask", auth, AskQuestion);
 router.get("/get", getAllQuestions);
 
-//Use id of questions for the routes.
+//Use id of questions for the routes
 
 router.delete("/delete/:id", auth, deleteQuestion);
 router.patch("/vote/:id", auth, voteQuestion);

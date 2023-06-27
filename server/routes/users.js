@@ -6,10 +6,12 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
+//signup and login
+
 router.post("/signup", signup);
 router.post("/login", login);
 
-router.get("/:id", getUser);
+//use user id for the route
 
 router.get("/getAllUsers", getAllUsers);
 router.get("/:id", getUser);
